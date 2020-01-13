@@ -34,97 +34,83 @@ Zeropack is a single-file UI component library that works directly in the browse
     <head>
         <meta charset='utf-8' />
         <title>Zeropack example</title>
-         
     </head>
     <body>
-    </body>
+        <script src="./require.min.js"></script>
+        <script type="text/javascript">
+            define("ChildComponent", function(require, exports) {
+                const { Component, tmpl, } = require("./component");
+                return class ChildComponent extends Component {
 
-    <script src="./require.min.js"></script>
-    <script type="text/javascript">
-        define("ChildComponent", function(require, exports) {
-            const { Component, tmpl, } = require("./component");
-
-            return class ChildComponent extends Component {
-
-                template() {
-                    return tmpl`
-                        <div class='box'>
-                            This is a child component
-                            <div>
-                                ${this.state.number}
+                    template() {
+                        return tmpl`
+                            <div class='box'>
+                                This is a child component
+                                <div>
+                                    ${this.state.number}
+                                </div>
                             </div>
-                        </div>
-                        
-                    `
+                            
+                        `
+                    }
+
+
+                    css() {
+                        return ` .box { padding: 50px; border: 5px solid black; } `;
+                    }
+
+                    init_client({parent}) {
+                        this.attach_to({parent_elem: parent});
+                        this.load_css();
+
+                        setInterval(() => {
+                            this.state.number++;
+                            this.render();
+                        }, 1000);
+                    }
                 }
-
-
-                css() {
-                    return `
-                        .box { padding: 50px; border: 5px solid black; }
-                                        
-                    `
-                }
-
-                init_client({parent}) {
-
-                    this.attach_to({parent_elem: parent});
-                    this.load_css();
-
-                    setInterval(() => {
-                        this.state.number++;
-                        this.render();
-                    }, 1000);
-                         
-
-                }
-            }
-
-        });
-    </script>
-
-    <script type="text/javascript">
-        define("ParentComponent", function(require, exports) {
-            
-            const { Component, tmpl, } = require("./component");
-            const ChildComponent = require('ChildComponent');
-
-            class ParentComponent extends Component {
-
-
-                constructor({parent}) {
-                    super({parent});
-                    this.child_component = new ChildComponent({state: {number: 1}, parent: this.element});
-                }
-
-                template() {
-                    return tmpl`
-                        <div>
-                            This is the parent component
-                            <div>
-                                ${this.child_component}
-                            </div>
-                        </div>
-                        
-                    `
-                }
-
-            }
-
-            return ParentComponent;
-        });
-    </script>
-
-    <script type="text/javascript">
-
-        require(["ParentComponent"], function(ParentComponent){
-            var component = new ParentComponent({
-                parent: document.querySelector('body'),
             });
-        })
-    
-    </script>
+        </script>
 
+        <script type="text/javascript">
+            define("ParentComponent", function(require, exports) {
+                
+                const { Component, tmpl, } = require("./component");
+                const ChildComponent = require('ChildComponent');
+
+                class ParentComponent extends Component {
+                    constructor({parent}) {
+                        super({parent});
+                        this.child_component = new ChildComponent({state: {number: 1}, parent: this.element});
+                    }
+
+                    template() {
+                        return tmpl`
+                            <div>
+                                This is the parent component
+                                <div>
+                                    ${this.child_component}
+                                </div>
+                            </div>
+                        `
+                    }
+
+                }
+
+                return ParentComponent;
+            });
+        </script>
+
+        <script type="text/javascript">
+
+            require(["ParentComponent"], function(ParentComponent){
+                var component = new ParentComponent({
+                    parent: document.querySelector('body'),
+                });
+            })
+        
+        </script>
+    </body>
 </html>
 ```
 
