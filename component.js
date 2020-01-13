@@ -36,7 +36,9 @@ define(function(require, exports) {
         if(Array.isArray(strings)) {
             // support array of templates being bassed
             strings.forEach( (s, i) => {
-                if(strings[i] instanceof HTMLTemplate) {
+                if(strings[i] instanceof Component) {
+                    strings[i] = strings[i].template().html;
+                } else if(strings[i] instanceof HTMLTemplate) {
                     strings[i] = strings[i].html;
                 }
             });
