@@ -50,7 +50,6 @@ Zeropack is a single-file UI component library that works directly in the browse
                                     ${this.state.number}
                                 </div>
                             </div>
-                            
                         `
                     }
 
