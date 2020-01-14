@@ -113,7 +113,7 @@ Zeropack is a single-file UI component library that works directly in the browse
 
 You can use require.js built-in require function asynchronously:
 
-```
+```javascript
 require(["./module_name", function(ModuleName) {
     ...
 });
@@ -122,11 +122,11 @@ require(["./module_name", function(ModuleName) {
 
 ### Server-side rendering in node
 Put this in your node.js entry point:
-```
+```javascript
 require('global-define')({basePath: __dirname+'/client'});
 ```
 And then require the file as you normally would:
-```
+```javascript
 const SomeComponent = require("some_component");
 const response_html = (new SomeComponent({...})).html();
 ```
@@ -135,7 +135,7 @@ const response_html = (new SomeComponent({...})).html();
 
 ### Prevent component from re-rendering an element
 Just add `norender` attribute to any html element.
-```
+```html
 <div class="bla" norender>
     ...
 </div>
@@ -145,28 +145,32 @@ Just add `norender` attribute to any html element.
 ### Other Component API
 Other useful functions you should feel free to use are:
 
-```
-Component.css()        // returns CSS as string
+```javascript
 Component.load_css()   // loads style sheet onto page (overwrites if already loaded)
+                       // load_css() happens automatically in constructor (client-side only)
+
+Component.css()        // returns CSS as string
 Component.load_remote_css(path)   // loads style sheet from URL
 Component.init()       // blank method that gets called upon DOM init. should be defined by user
 
 Component.add_css_namespace(selector, css)   // returns new css with parent selector added to all css statements
 Component.on("event", selector, callback)    // like the jQuery .on()
 Component.find("selector")    // like the jQuery .find()
+
+Component.element      // reference to the root DOM element of the component
 ```
 
 
 
 ### ES6 to ES5 transpiling for IE support
 Make sure you install `npx`, `@babel/preset-env` and `babel-plugin-iife-wrap`. Then run
-```
+```bash
 npx babel client/ -d client.es5 --presets=@babel/preset-env --plugins=iife-wrap
 ```
 where `client/` is the ES6 directory, and `client.es5` is the target directory. Filenames and file structure remains unchanged.
 
 At this point you can gracefully downgrade to the ES5 code with older browsers by configuring require.js on the browser:
-```
+```javascript
 function check_es6() {
     "use strict";
 
@@ -198,7 +202,7 @@ requirejs.config({
 Warning: you may also need the following polyfills for IE11 support.
 
 You can load them only on browsers that don't support ES6 via require.js:
-```
+```javascript
 var libs = [];
 if (!check_es6()) {
     libs = ["polyfills/regenerator-runtime.min", "polyfills/external-helpers", "polyfills/ie-polyfill"];
