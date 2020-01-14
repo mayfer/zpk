@@ -42,7 +42,7 @@ Zeropack is a single-file UI component library that works directly in the browse
         <script src="./require.min.js"></script>
         <script type="text/javascript">
             define("ChildComponent", function(require, exports) {
-                const { Component, tmpl, } = require("./component");
+                const { Component, tmpl, } = require("./zpk");
                 return class ChildComponent extends Component {
 
                     template() {
@@ -74,10 +74,10 @@ Zeropack is a single-file UI component library that works directly in the browse
         <script type="text/javascript">
             define("ParentComponent", function(require, exports) {
                 
-                const { Component, tmpl, } = require("./component");
+                const { Component, tmpl, } = require("./zpk");
                 const ChildComponent = require('ChildComponent');
 
-                return class ParentComponent extends Component {
+                class ParentComponent extends Component {
                     constructor({parent}) {
                         super({parent});
                         this.child_component = new ChildComponent({state: {number: 1}, parent: this.find(".child-container")});
@@ -96,19 +96,22 @@ Zeropack is a single-file UI component library that works directly in the browse
 
 
                 }
+
+                return ParentComponent;
             });
         </script>
 
         <script type="text/javascript">
 
             require(["ParentComponent"], function(ParentComponent){
-                var component = new ParentComponent({ parent: document.querySelector('body') });
+                var component = new ParentComponent({
+                    parent: document.querySelector('body'),
+                });
             })
         
         </script>
     </body>
 </html>
-
 ```
 
 
