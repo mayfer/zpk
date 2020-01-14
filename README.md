@@ -133,22 +133,12 @@ const response_html = (new SomeComponent({...})).html();
 
 
 
-
-### ES6 to ES5 transpiling for IE support
-Make sure you install `npx`, `@babel/preset-env` and `babel-plugin-iife-wrap` installed. Then run
-```
-npx babel client/ -d client.es5 --presets=@babel/preset-env --plugins=iife-wrap
-```
-where `client/` is the ES6 directory, and `client.es5` is the target directory. Filenames and file structure remains unchanged.
-
-
-
 ### Prevent component from re-rendering an element
 Just add `norender` attribute to any html element.
 ```
-    <div class="bla" norender>
-        ...
-    </div>
+<div class="bla" norender>
+    ...
+</div>
 ```
 
 
@@ -164,4 +154,56 @@ Component.init()       // blank method that gets called upon DOM init. should be
 Component.add_css_namespace(selector, css)   // returns new css with parent selector added to all css statements
 Component.on("event", selector, callback)    // like the jQuery .on()
 Component.find("selector")    // like the jQuery .find()
+```
+
+
+
+### ES6 to ES5 transpiling for IE support
+Make sure you install `npx`, `@babel/preset-env` and `babel-plugin-iife-wrap`. Then run
+```
+npx babel client/ -d client.es5 --presets=@babel/preset-env --plugins=iife-wrap
+```
+where `client/` is the ES6 directory, and `client.es5` is the target directory. Filenames and file structure remains unchanged.
+
+At this point you can gracefully downgrade to the ES5 code with older browsers by configuring require.js on the browser:
+```
+function check_es6() {
+    "use strict";
+
+    if (typeof Symbol == "undefined") return false;
+    try {
+        eval("class Foo {}");
+        eval("var bar = (x) => x+1");
+    } catch (e) { return false; }
+    return true;
+}
+
+var js_base_url;
+var entry_points = ["teaorbit/root"];
+if (check_es6()) {
+    // regular ES6 folder
+    js_base_url = '/client/';
+} else {
+    // transpiled ES5 folder
+    js_base_url = '/client.es5/';
+}
+
+requirejs.config({
+    baseUrl: js_base_url,
+});
+
+
+```
+
+Warning: you may also need the following polyfills for IE11 support.
+
+You can load them only on browsers that don't support ES6 via require.js:
+```
+var libs = [];
+if (!check_es6()) {
+    libs = ["polyfills/regenerator-runtime.min", "polyfills/external-helpers", "polyfills/ie-polyfill"];
+}
+require(libs, function() {
+    // run rest of app
+})
 ```
