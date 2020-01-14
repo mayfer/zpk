@@ -11,14 +11,14 @@ Most simplified React-like frameworks (such as Preact or choo) still assume the 
 
 Zeropack is a single-file UI component library that works directly in the browser, without needing any bundling or transpiling.
 
-#### Goals:
+### Goals:
 * Make it easy to keep a project's initial download size tiny, even as it grows. Lazy-loading of all HTML/CSS/JS as needed
 * Avoid bundling. All code should run out-of-the-box on modern browsers.
 * Achieve full browser compatibility while still using ES6 syntax
 * Have a good templating method that automatically sanitizes strings to avoid XSS
 * Only update the DOM elements that have changed upon render().
 
-#### Solutions:
+### Solutions:
 * require.js for lazy-loading modules &amp; managing dependencies
 * morphdom.js for DOM diffing
 * ES6 tagged template literals for component HTML &amp; CSS
@@ -26,7 +26,7 @@ Zeropack is a single-file UI component library that works directly in the browse
 * babel.js for transpiling ES6 code to ES5 for IE compatibility
 
 
-#### Example:
+### One-page example:
 ```html
 <!DOCTYPE html>
 <html>
@@ -109,7 +109,7 @@ Zeropack is a single-file UI component library that works directly in the browse
 
 
 
-#### Lazy-loading of components
+### Lazy-loading of components
 
 You can use require.js built-in require function asynchronously:
 
@@ -120,7 +120,7 @@ require(["./module_name", function(ModuleName) {
 ```
 
 
-#### Server-side rendering in node
+### Server-side rendering in node
 Put this in your node.js entry point:
 ```
 require('global-define')({basePath: __dirname+'/client'});
@@ -134,7 +134,7 @@ const response_html = (new SomeComponent({...})).html();
 
 
 
-* ES6 to ES5 transpiling for IE support
+### ES6 to ES5 transpiling for IE support
 Make sure you install `npx`, `@babel/preset-env` and `babel-plugin-iife-wrap` installed. Then run
 ```
 npx babel client/ -d client.es5 --presets=@babel/preset-env --plugins=iife-wrap
@@ -143,10 +143,25 @@ where `client/` is the ES6 directory, and `client.es5` is the target directory. 
 
 
 
-#### Prevent component from re-rendering an element
+### Prevent component from re-rendering an element
 Just add `norender` attribute to any html element.
 ```
     <div class="bla" norender>
         ...
     </div>
+```
+
+
+### Other Component API
+Other useful functions you should feel free to use are:
+
+```
+Component.css()        // returns CSS as string
+Component.load_css()   // loads style sheet onto page (overwrites if already loaded)
+Component.load_remote_css(path)   // loads style sheet from URL
+Component.init()       // blank method that gets called upon DOM init. should be defined by user
+
+Component.add_css_namespace(selector, css)   // returns new css with parent selector added to all css statements
+Component.on("event", selector, callback)    // like the jQuery .on()
+Component.find("selector")    // like the jQuery .find()
 ```
