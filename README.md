@@ -1,9 +1,9 @@
-# Zeropack
+# zpk
 
 ## A simple React-like Front-end Javascript library that avoids Webpack &amp; browserify
 
 
-Zeropack is a lightweight and complete UI library for those who dislike Webpack and Browserify.
+zpk is a lightweight and complete UI library for those who dislike Webpack and Browserify.
 
 ### Motivation for the project
 
@@ -24,7 +24,6 @@ Zeropack is a single-file UI component library that works directly in the browse
 * ES6 tagged template literals for component HTML &amp; CSS
 * global-define.js for importing UI components on the server for server-side rendering
 * babel.js for transpiling ES6 code to ES5 for IE compatibility
-
 
 
 #### Example:
@@ -74,7 +73,7 @@ Zeropack is a single-file UI component library that works directly in the browse
                 const { Component, tmpl, } = require("./component");
                 const ChildComponent = require('ChildComponent');
 
-                class ParentComponent extends Component {
+                return class ParentComponent extends Component {
                     constructor({parent}) {
                         super({parent});
                         this.child_component = new ChildComponent({state: {number: 1}, parent: this.find(".child-container")});
@@ -93,17 +92,13 @@ Zeropack is a single-file UI component library that works directly in the browse
 
 
                 }
-
-                return ParentComponent;
             });
         </script>
 
         <script type="text/javascript">
 
             require(["ParentComponent"], function(ParentComponent){
-                var component = new ParentComponent({
-                    parent: document.querySelector('body'),
-                });
+                var component = new ParentComponent({ parent: document.querySelector('body') });
             })
         
         </script>
@@ -112,3 +107,46 @@ Zeropack is a single-file UI component library that works directly in the browse
 
 ```
 
+
+
+#### Lazy-loading of components
+
+You can use require.js built-in require function asynchronously:
+
+```
+require(["./module_name", function(ModuleName) {
+    ...
+});
+```
+
+
+#### Server-side rendering in node
+Put this in your node.js entry point:
+```
+require('global-define')({basePath: __dirname+'/client'});
+```
+And then require the file as you normally would:
+```
+const SomeComponent = require("some_component");
+const response_html = (new SomeComponent({...})).html();
+```
+
+
+
+
+* ES6 to ES5 transpiling for IE support
+Make sure you install `npx`, `@babel/preset-env` and `babel-plugin-iife-wrap` installed. Then run
+```
+npx babel client/ -d client.es5 --presets=@babel/preset-env --plugins=iife-wrap
+```
+where `client/` is the ES6 directory, and `client.es5` is the target directory. Filenames and file structure remains unchanged.
+
+
+
+#### Prevent component from re-rendering an element
+Just add `norender` attribute to any html element.
+```
+    <div class="bla" norender>
+        ...
+    </div>
+```
