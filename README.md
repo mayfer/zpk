@@ -20,11 +20,11 @@ Zeropack is a single-file UI component library that works directly in the browse
 * Only update the DOM elements that have changed upon render().
 
 ### Solutions:
-* require.js for lazy-loading modules &amp; managing dependencies
-* morphdom.js for DOM diffing
-* ES6 tagged template literals for component HTML &amp; CSS
-* global-define.js for importing UI components on the server for server-side rendering
-* babel.js for transpiling ES6 code to ES5 for IE compatibility
+* [require.js](https://requirejs.org) for lazy-loading modules &amp; managing dependencies
+* [morphdom.js](https://www.npmjs.com/package/morphdom) for DOM diffing
+* [ES6 tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) for component HTML &amp; CSS ([same idea as this](https://github.com/maxogden/yo-yo))
+* [global-define](https://www.npmjs.com/package/global-define) for importing UI components on the server for server-side rendering
+* [babel.js](http://babeljs.io) for transpiling ES6 code to ES5 for IE compatibility
 
 ---
 
