@@ -36,7 +36,7 @@ Zeropack is a single-file UI component library that works directly in the browse
 <html>
     <head>
         <meta charset='utf-8' />
-        <title>Zeropack example</title>
+        <title>zpk example</title>
     </head>
     <body>
         <script src="./require.min.js"></script>
