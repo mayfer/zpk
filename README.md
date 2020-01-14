@@ -125,11 +125,11 @@ require(["./module_name", function(ModuleName) {
 
 
 ### Server-side rendering in node
-Put this in your node.js entry point:
+Put this in your node.js top-level entry point (i.e. `server.js` or `run.js`):
 ```javascript
 require('global-define')({basePath: __dirname+'/client'});
 ```
-And then require the file as you normally would:
+And then require the file as you normally would anywhere within the project:
 ```javascript
 const SomeComponent = require("some_component");
 const response_html = (new SomeComponent({...})).html();
@@ -187,7 +187,6 @@ function check_es6() {
 }
 
 var js_base_url;
-var entry_points = ["teaorbit/root"];
 if (check_es6()) {
     // regular ES6 folder
     js_base_url = '/client/';
