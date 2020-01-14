@@ -37,7 +37,7 @@ define(function(require, exports) {
             // support array of templates being bassed
             strings.forEach( (s, i) => {
                 if(strings[i] instanceof Component) {
-                    strings[i] = strings[i].template().html;
+                    strings[i] = strings[i].html();
                 } else if(strings[i] instanceof HTMLTemplate) {
                     strings[i] = strings[i].html;
                 }
@@ -49,7 +49,9 @@ define(function(require, exports) {
 
         strings.forEach((string, i) => {
             let value = values[i];
-            if(value instanceof HTMLTemplate) {
+            if(value instanceof Component) {
+                str += `${string}${(value.html() || '')}`;
+            } else if(value instanceof HTMLTemplate) {
                 str += `${string}${(value.html || '')}`;
             } else {
                 str += `${string}${htmlentities(String(value || ''))}`;
@@ -59,11 +61,11 @@ define(function(require, exports) {
     }
 
     class Component {
-        constructor({state={}, parent}) {
+        constructor({state={}, parent, element}) {
             this.namespace = this.constructor.name;
             this.state = state;
-            if(parent) {
-                this.init_client({parent});
+            if(typeof window !== "undefined") {
+                this.init_client({parent, element});
             }
         }
 
@@ -125,10 +127,13 @@ define(function(require, exports) {
             return css.replace(reg, "$1" + parentSelector + " $2 {");
         };
 
-        init_client({parent}) {
-            this.attach_to({parent_elem: parent});
+        init() {
+        }
+
+        init_client({parent, element}) {
+            this.attach_to({parent_elem: parent, replace_elem: element});
             this.load_css();
-            
+            this.init();
         }
 
         load_css() {
