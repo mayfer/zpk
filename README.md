@@ -2,8 +2,9 @@
 
 ## A simple React-like Front-end Javascript library that avoids Webpack &amp; browserify
 
+**zpk.js** is a lightweight and complete UI library for those who dislike Webpack and Browserify.
 
-zpk is a lightweight and complete UI library for those who dislike Webpack and Browserify.
+---
 
 ### Motivation for the project
 
@@ -25,6 +26,9 @@ Zeropack is a single-file UI component library that works directly in the browse
 * global-define.js for importing UI components on the server for server-side rendering
 * babel.js for transpiling ES6 code to ES5 for IE compatibility
 
+---
+
+## Examples
 
 ### One-page example:
 ```html
