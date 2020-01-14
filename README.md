@@ -43,8 +43,8 @@ Zeropack is a single-file UI component library that works directly in the browse
         <script type="text/javascript">
             define("ChildComponent", function(require, exports) {
                 const { Component, tmpl, } = require("./zpk");
-                return class ChildComponent extends Component {
 
+                return class ChildComponent extends Component {
                     template() {
                         return tmpl`
                             <div class='box'>
@@ -55,7 +55,6 @@ Zeropack is a single-file UI component library that works directly in the browse
                             </div>
                         `
                     }
-
 
                     css() {
                         return ` .box { padding: 50px; border: 5px solid black; } `;
@@ -73,11 +72,10 @@ Zeropack is a single-file UI component library that works directly in the browse
 
         <script type="text/javascript">
             define("ParentComponent", function(require, exports) {
-                
                 const { Component, tmpl, } = require("./zpk");
                 const ChildComponent = require('ChildComponent');
 
-                class ParentComponent extends Component {
+                return class ParentComponent extends Component {
                     constructor({parent}) {
                         super({parent});
                         this.child_component = new ChildComponent({state: {number: 1}, parent: this.find(".child-container")});
@@ -93,11 +91,7 @@ Zeropack is a single-file UI component library that works directly in the browse
                             </div>
                         `
                     }
-
-
                 }
-
-                return ParentComponent;
             });
         </script>
 
